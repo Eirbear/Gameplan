@@ -6,66 +6,287 @@
     <title>Game Plan - Pro</title>
     <style>
         :root {
-            --primary: #1e3a8a; --secondary: #3b82f6; --light: #e0f2fe;
-            --accent: #f59e0b; --danger: #ef4444; --gray: #64748b;
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --light: #e0f2fe;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --gray: #64748b;
         }
 
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f7f6; display: flex; flex-direction: column; align-items: center; }
-        header { width: 100%; height: 80px; background: var(--primary); display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        
-        .plan-navigation { width: 95%; max-width: 1200px; margin-top: 20px; display: flex; align-items: flex-end; gap: 5px; overflow-x: auto; padding-bottom: 2px; }
-        .tab { 
-            padding: 10px 20px; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: bold;
-            background: #d1d5db; color: #4b5563; border: none; transition: 0.3s; white-space: nowrap; display: flex; align-items: center; gap: 8px;
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: #f4f7f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .tab.active { background: white; color: var(--primary); border-top: 4px solid var(--secondary); }
-        .tab-lock { font-size: 12px; opacity: 0.7; }
 
-        .main-layout { display: flex; width: 95%; max-width: 1200px; gap: 20px; align-items: flex-start; margin-bottom: 50px; }
-        
-        .container { flex: 3; background: white; border-radius: 0 8px 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); overflow: hidden; min-height: 500px; }
-        
-        .goals-sidebar { flex: 1; background: white; border-radius: 8px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); position: sticky; top: 20px; }
-        .goals-sidebar h3 { margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--light); padding-bottom: 10px; }
-        #goals-input { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px; }
+        header {
+            width: 100%;
+            height: 80px;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-        .plan-header { background: var(--light); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .plan-header h2 { margin: 0; color: var(--primary); font-size: 1.5rem; }
-        
-        .header-btns { display: flex; gap: 8px; }
-        .sec-btn { background: white; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
-        .sec-btn:hover { background: #f8fafc; }
-        .del-plan-btn { color: var(--danger); border-color: #fecaca; }
+        .plan-navigation {
+            width: 95%;
+            max-width: 1200px;
+            margin-top: 20px;
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
 
-        .filter-bar { padding: 10px 20px; background: #f8fafc; border-bottom: 1px solid #eee; }
-        .filter-bar input { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
+        .tab {
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: bold;
+            background: #d1d5db;
+            color: #4b5563;
+            border: none;
+            transition: 0.3s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-        .legend { background: var(--secondary); color: white; display: flex; padding: 12px 20px; font-weight: bold; font-size: 0.85rem; }
-        .col-act { flex: 3; } .col-day { flex: 1.5; } .col-pri { flex: 1; text-align: right; margin-right: 120px; }
+        .tab.active {
+            background: white;
+            color: var(--primary);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .tab-lock {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .main-layout {
+            display: flex;
+            width: 95%;
+            max-width: 1200px;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 50px;
+        }
+
+        .container {
+            flex: 3;
+            background: white;
+            border-radius: 0 8px 8px 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .goals-sidebar {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 20px;
+        }
+
+        .goals-sidebar h3 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 10px;
+        }
+
+        #goals-input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .plan-header {
+            background: var(--light);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .plan-header h2 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .sec-btn {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .sec-btn:hover {
+            background: #f8fafc;
+        }
+
+        .del-plan-btn {
+            color: var(--danger);
+            border-color: #fecaca;
+        }
+
+        .filter-bar {
+            padding: 10px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-bar input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .legend {
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .col-act { flex: 3; }
+        .col-day { flex: 1.5; }
+        .col-pri { flex: 1; text-align: right; margin-right: 120px; }
 
         #activity-list { min-height: 200px; }
-        .activity-item { border-bottom: 1px solid #eee; padding: 15px; position: relative; transition: 0.2s; }
-        .activity-item:hover { background: #fcfcfc; }
-        .activity-item.is-favorite { background: #fffbeb; border-left: 5px solid var(--accent); }
-        
-        .item-main { display: flex; align-items: center; cursor: pointer; }
-        .description { display: none; padding: 15px; background: #f0f7ff; margin-top: 10px; border-radius: 4px; font-size: 0.9rem; }
 
-        .btn-group { position: absolute; right: 10px; top: 12px; display: flex; gap: 5px; }
-        .btn-group button { border: none; border-radius: 4px; padding: 5px 8px; cursor: pointer; color: white; font-size: 11px; }
-        .fav-btn { background: var(--accent); } .del-btn { background: var(--danger); } .edit-btn { background: var(--gray); }
+        .activity-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px;
+            position: relative;
+            transition: 0.2s;
+        }
 
-        .controls { padding: 20px; text-align: center; border-top: 1px solid #eee; }
-        #add-btn { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 30px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .activity-item:hover {
+            background: #fcfcfc;
+        }
 
-        #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 100; }
-        .modal { background: white; padding: 25px; border-radius: 10px; width: 350px; display: flex; flex-direction: column; gap: 10px; }
-        input, textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        .activity-item.is-favorite {
+            background: #fffbeb;
+            border-left: 5px solid var(--accent);
+        }
+
+        .item-main {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .description {
+            display: none;
+            padding: 15px;
+            background: #f0f7ff;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .btn-group {
+            position: absolute;
+            right: 10px;
+            top: 12px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-group button {
+            border: none;
+            border-radius: 4px;
+            padding: 5px 8px;
+            cursor: pointer;
+            color: white;
+            font-size: 11px;
+        }
+
+        .fav-btn { background: var(--accent); }
+        .del-btn { background: var(--danger); }
+        .edit-btn { background: var(--gray); }
+
+        .controls {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        #add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 
-    <header><h1>Game Plan</h1></header>
+    <header>
+        <h1>Game Plan</h1>
+    </header>
 
     <div class="plan-navigation" id="plan-tabs"></div>
 
@@ -79,16 +300,22 @@
                     <button class="sec-btn" onclick="addNewPlan()" style="background:var(--primary); color:white; border:none;">+ New Plan</button>
                 </div>
             </div>
+            
             <div class="filter-bar">
                 <input type="text" id="day-filter" placeholder="🔍 Filter by day (e.g. Friday, 15th)..." oninput="renderActivities()">
             </div>
+            
             <div class="legend">
                 <div class="col-act">Activity</div>
                 <div class="col-day">Day</div>
                 <div class="col-pri">Price</div>
             </div>
+            
             <div id="activity-list"></div>
-            <div class="controls"><button id="add-btn" onclick="openModal()">+</button></div>
+            
+            <div class="controls">
+                <button id="add-btn" onclick="openModal()">+</button>
+            </div>
         </div>
 
         <div class="goals-sidebar">
@@ -112,206 +339,232 @@
     </div>
 
     <script>
-    const BIN_ID = '6a013a1b250b1311c330a7e0'; 
-    const API_KEY = '$2a$10$PCAiT3DnP9fzLPWQQU0GW.jXTIrSrMK5bmkGhyTZ36vRrOakWOQzy';
-    const URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+        const BIN_ID = '6a013a1b250b1311c330a7e0'; 
+        const API_KEY = '$2a$10$PCAiT3DnP9fzLPWQQU0GW.jXTIrSrMK5bmkGhyTZ36vRrOakWOQzy';
+        const URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-    let allData = {
-        activePlan: "General",
-        plans: { "General": { items: [], goals: [], password: "" } }
-    };
-
-    window.onload = async () => { await load(); };
-
-    async function load() {
-        try {
-            const res = await fetch(URL, { headers: { 'X-Master-Key': API_KEY } });
-            const data = await res.json();
-            if (data.record && data.record.plans) {
-                allData = data.record;
-                // Double-check all plans have the right structure
-                Object.keys(allData.plans).forEach(name => {
-                    if (!allData.plans[name].items) allData.plans[name].items = [];
-                    if (!allData.plans[name].goals) allData.plans[name].goals = [];
-                    if (!allData.plans[name].password) allData.plans[name].password = "";
-                });
-                renderTabs();
-                switchPlan(allData.activePlan || "General", true);
-            }
-        } catch (e) { console.error("Load Error:", e); }
-    }
-
-    async function save() {
-        try {
-            const response = await fetch(URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-                body: JSON.stringify(allData)
-            });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            console.log("Saved successfully to JSONBin");
-        } catch (e) {
-            console.error("Save Error:", e);
-            alert("Could not save to cloud. Check your internet or API key.");
-        }
-    }
-
-    function renderTabs() {
-        const nav = document.getElementById('plan-tabs');
-        if(!nav) return;
-        nav.innerHTML = "";
-        Object.keys(allData.plans).forEach(name => {
-            const isLocked = allData.plans[name].password ? "🔒" : "";
-            const btn = document.createElement('button');
-            btn.className = `tab ${name === allData.activePlan ? 'active' : ''}`;
-            btn.innerHTML = `<span>${name}</span> <span style="font-size:10px; margin-left:5px;">${isLocked}</span>`;
-            btn.onclick = () => switchPlan(name);
-            nav.appendChild(btn);
-        });
-    }
-
-    function switchPlan(name, silent = false) {
-        const plan = allData.plans[name];
-        if (!plan) return;
-        if (!silent && plan.password) {
-            const entry = prompt(`Password for ${name}:`);
-            if (entry !== plan.password) return alert("Wrong password!");
-        }
-        allData.activePlan = name;
-        document.getElementById('active-title').innerText = name;
-        renderActivities();
-        renderGoals();
-        renderTabs();
-    }
-
-    function renderActivities() {
-        const list = document.getElementById('activity-list');
-        const filter = document.getElementById('day-filter').value.toLowerCase();
-        list.innerHTML = "";
-        
-        const currentPlan = allData.plans[allData.activePlan];
-        if (!currentPlan || !currentPlan.items) return;
-
-        currentPlan.items.forEach((item, index) => {
-            if (filter && !item.day.toLowerCase().includes(filter)) return;
-            const row = document.createElement('div');
-            row.className = `activity-item ${item.fav ? 'is-favorite' : ''}`;
-            row.innerHTML = `
-                <div class="item-main" onclick="toggleRow(${index})">
-                    <div class="col-act"><strong>${item.act}</strong></div>
-                    <div class="col-day">${item.day}</div>
-                    <div class="col-pri">${item.pri}</div>
-                    <div class="btn-group">
-                        <button class="edit-btn" onclick="event.stopPropagation(); openModal(${index})">Edit</button>
-                        <button class="fav-btn" onclick="event.stopPropagation(); toggleFav(${index})">★</button>
-                        <button class="del-btn" onclick="event.stopPropagation(); delItem(${index})">X</button>
-                    </div>
-                </div>
-                <div class="description" id="dsc-${index}">${item.dsc}</div>`;
-            list.appendChild(row);
-        });
-    }
-
-    async function saveActivity() {
-        console.log("Save button clicked");
-        const idx = document.getElementById('edit-index').value;
-        const actName = document.getElementById('in-act').value;
-        
-        if (!actName) return alert("Please enter an activity name!");
-
-        const newItem = {
-            act: actName,
-            day: document.getElementById('in-day').value || "TBD",
-            pri: document.getElementById('in-pri').value || "Free",
-            dsc: document.getElementById('in-dsc').value || "",
-            fav: (idx > -1 && allData.plans[allData.activePlan].items[idx]) ? allData.plans[allData.activePlan].items[idx].fav : false
+        let allData = {
+            activePlan: "General",
+            plans: { "General": { items: [], goals: [], password: "" } }
         };
 
-        if (idx > -1) {
-            allData.plans[allData.activePlan].items[idx] = newItem;
-        } else {
-            allData.plans[allData.activePlan].items.push(newItem);
+        window.onload = async () => { await load(); };
+
+        async function load() {
+            try {
+                const res = await fetch(URL, { headers: { 'X-Master-Key': API_KEY } });
+                const data = await res.json();
+                if (data.record && data.record.plans) {
+                    allData = data.record;
+                    // Double-check all plans have the right structure
+                    Object.keys(allData.plans).forEach(name => {
+                        if (!allData.plans[name].items) allData.plans[name].items = [];
+                        if (!allData.plans[name].goals) allData.plans[name].goals = [];
+                        if (!allData.plans[name].password) allData.plans[name].password = "";
+                    });
+                    renderTabs();
+                    switchPlan(allData.activePlan || "General", true);
+                }
+            } catch (e) {
+                console.error("Load Error:", e);
+            }
         }
 
-        renderActivities();
-        await save();
-        closeModal();
-    }
-
-    function openModal(index = -1) {
-        document.getElementById('modal-overlay').style.display = 'flex';
-        if (index > -1) {
-            const item = allData.plans[allData.activePlan].items[index];
-            document.getElementById('modal-title').innerText = "Edit Activity";
-            document.getElementById('edit-index').value = index;
-            document.getElementById('in-act').value = item.act;
-            document.getElementById('in-day').value = item.day;
-            document.getElementById('in-pri').value = item.pri;
-            document.getElementById('in-dsc').value = item.dsc;
-        } else {
-            document.getElementById('modal-title').innerText = "New Activity";
-            document.getElementById('edit-index').value = -1;
-            document.getElementById('in-act').value = "";
-            document.getElementById('in-day').value = "";
-            document.getElementById('in-pri').value = "";
-            document.getElementById('in-dsc').value = "";
+        async function save() {
+            try {
+                const response = await fetch(URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    body: JSON.stringify(allData)
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                console.log("Saved successfully to JSONBin");
+            } catch (e) {
+                console.error("Save Error:", e);
+                alert("Could not save to cloud. Check your internet or API key.");
+            }
         }
-    }
 
-    function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
-    async function toggleFav(i) { allData.plans[allData.activePlan].items[i].fav = !allData.plans[allData.activePlan].items[i].fav; renderActivities(); await save(); }
-    async function delItem(i) { if(confirm("Delete?")) { allData.plans[allData.activePlan].items.splice(i, 1); renderActivities(); await save(); } }
-    function toggleRow(i) { const d = document.getElementById(`dsc-${i}`); d.style.display = d.style.display === 'block' ? 'none' : 'block'; }
-    
-    function setPassword() {
-        const next = prompt("New password (blank to remove):", allData.plans[allData.activePlan].password || "");
-        if (next !== null) {
-            allData.plans[allData.activePlan].password = next;
-            renderTabs(); save();
+        function renderTabs() {
+            const nav = document.getElementById('plan-tabs');
+            if (!nav) return;
+            nav.innerHTML = "";
+            Object.keys(allData.plans).forEach(name => {
+                const isLocked = allData.plans[name].password ? "🔒" : "";
+                const btn = document.createElement('button');
+                btn.className = `tab ${name === allData.activePlan ? 'active' : ''}`;
+                btn.innerHTML = `<span>${name}</span> <span style="font-size:10px; margin-left:5px;">${isLocked}</span>`;
+                btn.onclick = () => switchPlan(name);
+                nav.appendChild(btn);
+            });
         }
-    }
 
-    function deleteCurrentPlan() {
-        const planName = allData.activePlan;
-        if (planName === "General") return alert("Cannot delete General.");
-        if (confirm(`Delete plan "${planName}"?`)) {
-            delete allData.plans[planName];
-            switchPlan("General", true);
+        function switchPlan(name, silent = false) {
+            const plan = allData.plans[name];
+            if (!plan) return;
+            if (!silent && plan.password) {
+                const entry = prompt(`Password for ${name}:`);
+                if (entry !== plan.password) return alert("Wrong password!");
+            }
+            allData.activePlan = name;
+            document.getElementById('active-title').innerText = name;
+            renderActivities();
+            renderGoals();
+            renderTabs();
+        }
+
+        function renderActivities() {
+            const list = document.getElementById('activity-list');
+            const filter = document.getElementById('day-filter').value.toLowerCase();
+            list.innerHTML = "";
+            
+            const currentPlan = allData.plans[allData.activePlan];
+            if (!currentPlan || !currentPlan.items) return;
+
+            currentPlan.items.forEach((item, index) => {
+                if (filter && !item.day.toLowerCase().includes(filter)) return;
+                const row = document.createElement('div');
+                row.className = `activity-item ${item.fav ? 'is-favorite' : ''}`;
+                row.innerHTML = `
+                    <div class="item-main" onclick="toggleRow(${index})">
+                        <div class="col-act"><strong>${item.act}</strong></div>
+                        <div class="col-day">${item.day}</div>
+                        <div class="col-pri">${item.pri}</div>
+                        <div class="btn-group">
+                            <button class="edit-btn" onclick="event.stopPropagation(); openModal(${index})">Edit</button>
+                            <button class="fav-btn" onclick="event.stopPropagation(); toggleFav(${index})">★</button>
+                            <button class="del-btn" onclick="event.stopPropagation(); delItem(${index})">X</button>
+                        </div>
+                    </div>
+                    <div class="description" id="dsc-${index}">${item.dsc}</div>`;
+                list.appendChild(row);
+            });
+        }
+
+        async function saveActivity() {
+            console.log("Save button clicked");
+            const idx = document.getElementById('edit-index').value;
+            const actName = document.getElementById('in-act').value;
+            
+            if (!actName) return alert("Please enter an activity name!");
+
+            const newItem = {
+                act: actName,
+                day: document.getElementById('in-day').value || "TBD",
+                pri: document.getElementById('in-pri').value || "Free",
+                dsc: document.getElementById('in-dsc').value || "",
+                fav: (idx > -1 && allData.plans[allData.activePlan].items[idx]) ? allData.plans[allData.activePlan].items[idx].fav : false
+            };
+
+            if (idx > -1) {
+                allData.plans[allData.activePlan].items[idx] = newItem;
+            } else {
+                allData.plans[allData.activePlan].items.push(newItem);
+            }
+
+            renderActivities();
+            await save();
+            closeModal();
+        }
+
+        function openModal(index = -1) {
+            document.getElementById('modal-overlay').style.display = 'flex';
+            if (index > -1) {
+                const item = allData.plans[allData.activePlan].items[index];
+                document.getElementById('modal-title').innerText = "Edit Activity";
+                document.getElementById('edit-index').value = index;
+                document.getElementById('in-act').value = item.act;
+                document.getElementById('in-day').value = item.day;
+                document.getElementById('in-pri').value = item.pri;
+                document.getElementById('in-dsc').value = item.dsc;
+            } else {
+                document.getElementById('modal-title').innerText = "New Activity";
+                document.getElementById('edit-index').value = -1;
+                document.getElementById('in-act').value = "";
+                document.getElementById('in-day').value = "";
+                document.getElementById('in-pri').value = "";
+                document.getElementById('in-dsc').value = "";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+
+        async function toggleFav(i) {
+            allData.plans[allData.activePlan].items[i].fav = !allData.plans[allData.activePlan].items[i].fav;
+            renderActivities();
+            await save();
+        }
+
+        async function delItem(i) {
+            if (confirm("Delete?")) {
+                allData.plans[allData.activePlan].items.splice(i, 1);
+                renderActivities();
+                await save();
+            }
+        }
+
+        function toggleRow(i) {
+            const d = document.getElementById(`dsc-${i}`);
+            d.style.display = d.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function setPassword() {
+            const next = prompt("New password (blank to remove):", allData.plans[allData.activePlan].password || "");
+            if (next !== null) {
+                allData.plans[allData.activePlan].password = next;
+                renderTabs();
+                save();
+            }
+        }
+
+        function deleteCurrentPlan() {
+            const planName = allData.activePlan;
+            if (planName === "General") return alert("Cannot delete General.");
+            if (confirm(`Delete plan "${planName}"?`)) {
+                delete allData.plans[planName];
+                switchPlan("General", true);
+                save();
+            }
+        }
+
+        function addNewPlan() {
+            const n = prompt("Plan Name:");
+            if (n && !allData.plans[n]) {
+                allData.plans[n] = { items: [], goals: [], password: "" };
+                switchPlan(n, true);
+                save();
+            } else if (allData.plans[n]) {
+                alert("Plan already exists!");
+            }
+        }
+
+        function renderGoals() {
+            const list = document.getElementById('goals-list');
+            list.innerHTML = "";
+            allData.plans[allData.activePlan].goals.forEach((g, i) => {
+                const item = document.createElement('div');
+                item.style = "display:flex; justify-content:space-between; margin-bottom:5px; font-size:14px;";
+                item.innerHTML = `<span>• ${g}</span> <span onclick="delGoal(${i})" style="cursor:pointer; color:red">×</span>`;
+                list.appendChild(item);
+            });
+        }
+
+        function addGoal() {
+            const val = document.getElementById('goals-input').value;
+            if (!val) return;
+            allData.plans[allData.activePlan].goals.push(val);
+            document.getElementById('goals-input').value = "";
+            renderGoals();
             save();
         }
-    }
 
-    function addNewPlan() {
-        const n = prompt("Plan Name:");
-        if(n && !allData.plans[n]) {
-            allData.plans[n] = { items: [], goals: [], password: "" };
-            switchPlan(n, true);
+        function delGoal(i) {
+            allData.plans[allData.activePlan].goals.splice(i, 1);
+            renderGoals();
             save();
-        } else if (allData.plans[n]) {
-            alert("Plan already exists!");
         }
-    }
-
-    function renderGoals() {
-        const list = document.getElementById('goals-list');
-        list.innerHTML = "";
-        allData.plans[allData.activePlan].goals.forEach((g, i) => {
-            const item = document.createElement('div');
-            item.style = "display:flex; justify-content:space-between; margin-bottom:5px; font-size:14px;";
-            item.innerHTML = `<span>• ${g}</span> <span onclick="delGoal(${i})" style="cursor:pointer; color:red">×</span>`;
-            list.appendChild(item);
-        });
-    }
-
-    function addGoal() {
-        const val = document.getElementById('goals-input').value;
-        if(!val) return;
-        allData.plans[allData.activePlan].goals.push(val);
-        document.getElementById('goals-input').value = "";
-        renderGoals(); save();
-    }
-
-    function delGoal(i) { allData.plans[allData.activePlan].goals.splice(i, 1); renderGoals(); save(); }
     </script>
 </body>
 </html>
