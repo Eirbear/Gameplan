@@ -62,7 +62,95 @@
         </div>
     </div>
 
-    <script>
+
+const BIN_ID = '6a013a1b250b1311c330a7e0'; 
+const API_KEY = '$2a$10$PCAiT3DnP9fzLPWQQU0GW.jXTIrSrMK5bmkGhyTZ36vRrOakWOQzy';
+const URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+// 1. Load data from the CLOUD when the page opens
+window.onload = async () => {
+    try {
+        const response = await fetch(URL, {
+            headers: { 'X-Master-Key': API_KEY }
+        });
+        const data = await response.json();
+        // If there is saved HTML in the cloud, put it in the list
+        if (data.record && data.record.html) {
+            document.getElementById('activity-list').innerHTML = data.record.html;
+        }
+    } catch (err) {
+        console.error("Cloud load failed:", err);
+    }
+};
+
+// 2. Save data to the CLOUD
+async function saveToCloud() {
+    const listHtml = document.getElementById('activity-list').innerHTML;
+    
+    await fetch(URL, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': API_KEY
+        },
+        body: JSON.stringify({ html: listHtml })
+    });
+}
+
+function toggleModal() {
+    const m = document.getElementById('modal-overlay');
+    m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+}
+
+async function addActivity() {
+    const act = document.getElementById('in-activity').value;
+    const day = document.getElementById('in-day').value;
+    const pri = document.getElementById('in-price').value;
+    const dsc = document.getElementById('in-desc').value;
+    if(!act) return alert("Enter an activity!");
+
+    const list = document.getElementById('activity-list');
+    const row = document.createElement('div');
+    row.className = 'activity-item';
+    row.setAttribute('onclick', 'toggleRow(this)');
+    
+    row.innerHTML = `
+        <div class="item-main">
+            <div class="col-activity"><strong>${act}</strong></div>
+            <div class="col-day">${day}</div>
+            <div class="col-price">${pri}</div>
+            <div class="btn-group">
+                <button class="fav-btn" onclick="toggleFav(event, this)">★</button>
+                <button class="delete-btn" onclick="deleteItem(event, this)">X</button>
+            </div>
+        </div>
+        <div class="description">${dsc}</div>
+    `;
+    list.appendChild(row);
+    
+    await saveToCloud(); // Push to cloud
+    toggleModal();
+    document.querySelectorAll('input, textarea').forEach(i => i.value = '');
+}
+
+function toggleRow(row) {
+    const d = row.querySelector('.description');
+    d.style.display = (d.style.display === 'block') ? 'none' : 'block';
+}
+
+async function toggleFav(e, btn) {
+    e.stopPropagation();
+    btn.closest('.activity-item').classList.toggle('is-favorite');
+    await saveToCloud(); // Save favorite status to cloud
+}
+
+async function deleteItem(e, btn) {
+    e.stopPropagation();
+    if(confirm("Delete this activity?")) {
+        btn.closest('.activity-item').remove();
+        await saveToCloud(); // Remove from cloud
+    }
+}
         window.onload = () => {
             const saved = localStorage.getItem('gamePlanData');
             if (saved) document.getElementById('activity-list').innerHTML = saved;
