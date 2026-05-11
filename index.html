@@ -3,62 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Plan</title>
+    <title>Game Plan - Private</title>
     <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --light-blue: #e0f2fe;
+            --accent-yellow: #f59e0b;
+            --danger-red: #ef4444;
+        }
+
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #f4f7f6; display: flex; flex-direction: column; align-items: center; }
-        header { width: 100%; height: 20vh; background-color: #1e3a8a; display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        header h1 { font-size: 3rem; margin: 0; }
+        header { width: 100%; height: 12vh; background-color: var(--primary-blue); display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         
-        .container { width: 90%; max-width: 1000px; margin: 40px auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; min-height: 300px; }
-        .legend { background-color: #3b82f6; color: white; display: flex; padding: 15px; font-weight: bold; }
+        .plan-navigation { width: 90%; max-width: 1000px; margin-top: 20px; display: flex; align-items: flex-end; gap: 5px; overflow-x: auto; padding-bottom: 2px; }
+        .tab { 
+            padding: 10px 20px; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: bold;
+            background: #d1d5db; color: #4b5563; border: none; transition: 0.3s; white-space: nowrap; display: flex; align-items: center; gap: 8px;
+        }
+        .tab.active { background: white; color: var(--primary-blue); border-top: 4px solid var(--secondary-blue); }
+        .tab-lock { font-size: 12px; opacity: 0.8; }
+
+        .container { width: 90%; max-width: 1000px; margin-bottom: 40px; background: white; border-radius: 0 0 8px 8px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; min-height: 400px; }
         
+        .plan-header { background-color: var(--light-blue); padding: 15px 20px; border-bottom: 1px solid #bae6fd; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .plan-header h2 { margin: 0; color: var(--primary-blue); font-size: 1.5rem; }
+        
+        .header-btns { display: flex; gap: 10px; }
+        .secondary-btn { background: white; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
+        .secondary-btn:hover { background: #f8fafc; }
+        .del-plan-btn { color: var(--danger-red); border-color: #fecaca; }
+        .del-plan-btn:hover { background: #fef2f2; }
+
+        .legend { background-color: var(--secondary-blue); color: white; display: flex; padding: 12px 20px; font-weight: bold; font-size: 0.9rem; }
         .col-activity { flex: 3; }
         .col-day { flex: 1.5; }
         .col-price { flex: 1; text-align: right; margin-right: 90px; } 
 
-        #activity-list { max-height: 400px; overflow-y: auto; }
-        .activity-item { border-bottom: 1px solid #eee; padding: 15px; cursor: pointer; position: relative; transition: 0.3s; }
-        .activity-item.is-favorite { background-color: #fffbeb; border-left: 5px solid #f59e0b; }
-        
-        .item-main { display: flex; align-items: center; }
-        .description { display: none; padding: 15px; background: #f0f7ff; border-left: 5px solid #1e3a8a; margin-top: 10px; }
+        #activity-list { min-height: 200px; max-height: 500px; overflow-y: auto; }
+        .activity-item { border-bottom: 1px solid #eee; padding: 15px; cursor: pointer; position: relative; }
+        .activity-item.is-favorite { background-color: #fffbeb; border-left: 5px solid var(--accent-yellow); }
+        .description { display: none; padding: 15px; background: #f0f7ff; border-left: 5px solid var(--primary-blue); margin-top: 10px; border-radius: 4px; }
 
         .btn-group { position: absolute; right: 10px; top: 12px; display: flex; gap: 5px; }
-        .delete-btn { background: #ff4444; color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer; }
-        .fav-btn { background: #f59e0b; color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer; }
+        .delete-btn { background: var(--danger-red); color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer; }
+        .fav-btn { background: var(--accent-yellow); color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer; }
 
-        .controls { padding: 20px; text-align: center; }
-        #add-btn { background: #1e3a8a; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 30px; cursor: pointer; }
+        .controls { padding: 30px; text-align: center; }
+        #add-btn { background: var(--primary-blue); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 35px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
         #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 100; }
-        .modal { background: white; padding: 25px; border-radius: 10px; width: 350px; display: flex; flex-direction: column; gap: 10px; }
-        input, textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        .submit-btn { background: #3b82f6; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; }
+        .modal { background: white; padding: 25px; border-radius: 10px; width: 350px; display: flex; flex-direction: column; gap: 12px; }
+        input, textarea { padding: 12px; border: 1px solid #ccc; border-radius: 6px; }
+        .submit-btn { background: var(--secondary-blue); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header><h1>Game Plan</h1></header>
 
+    <div class="plan-navigation" id="plan-tabs"></div>
+
     <div class="container">
+        <div class="plan-header">
+            <h2 id="active-plan-title">General</h2>
+            <div class="header-btns">
+                <button class="secondary-btn" onclick="setPassword()">🔒 Set Password</button>
+                <button class="secondary-btn del-plan-btn" onclick="deleteCurrentPlan()">🗑️ Delete Plan</button>
+            </div>
+        </div>
         <div class="legend">
             <div class="col-activity">Activity</div>
             <div class="col-day">Day/Time</div>
             <div class="col-price">Price</div>
         </div>
         <div id="activity-list"></div>
-        <div class="controls"><button id="add-btn" onclick="toggleModal()">+</button></div>
+        <div class="controls">
+            <button id="add-btn" onclick="toggleModal()">+</button>
+            <div style="margin-top:15px;"><button class="secondary-btn" onclick="addNewPlan()">+ Create New Plan</button></div>
+        </div>
     </div>
 
     <div id="modal-overlay">
         <div class="modal">
-            <h2 style="margin:0">New Activity</h2>
+            <h2 style="margin:0; color:var(--primary-blue)">New Activity</h2>
             <input type="text" id="in-activity" placeholder="Activity Name">
             <input type="text" id="in-day" placeholder="Day/Time">
             <input type="text" id="in-price" placeholder="Price">
             <textarea id="in-desc" placeholder="Details..." rows="3"></textarea>
             <button class="submit-btn" onclick="addActivity()">Save to Plan</button>
-            <button onclick="toggleModal()" style="background:none; border:none; cursor:pointer; color:gray;">Close</button>
+            <button onclick="toggleModal()" style="background:none; border:none; cursor:pointer; color:gray;">Cancel</button>
         </div>
     </div>
 
@@ -67,31 +101,129 @@
         const API_KEY = '$2a$10$PCAiT3DnP9fzLPWQQU0GW.jXTIrSrMK5bmkGhyTZ36vRrOakWOQzy';
         const URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-        // Load from cloud on startup
-        window.onload = async () => {
+        let allData = {
+            activePlan: "General",
+            plans: { "General": { html: "", password: "" } }
+        };
+
+        window.onload = async () => { await loadFromCloud(); };
+
+        async function loadFromCloud() {
             try {
-                const response = await fetch(URL, {
-                    headers: { 'X-Master-Key': API_KEY }
-                });
+                const response = await fetch(URL, { headers: { 'X-Master-Key': API_KEY } });
                 const data = await response.json();
-                if (data.record && data.record.html) {
-                    document.getElementById('activity-list').innerHTML = data.record.html;
+                if (data.record && data.record.plans) {
+                    allData = data.record;
+                    // Fix for old data format if it exists
+                    Object.keys(allData.plans).forEach(key => {
+                        if (typeof allData.plans[key] === 'string') {
+                            allData.plans[key] = { html: allData.plans[key], password: "" };
+                        }
+                    });
+                    renderTabs();
+                    // Initial load - use silent load to avoid prompt immediately on page open
+                    silentLoad(allData.activePlan || "General");
+                } else {
+                    renderTabs();
                 }
             } catch (err) {
                 console.error("Cloud load failed:", err);
+                renderTabs();
             }
-        };
+        }
 
         async function saveToCloud() {
-            const listHtml = document.getElementById('activity-list').innerHTML;
+            // Update current HTML before push
+            if(allData.plans[allData.activePlan]) {
+                allData.plans[allData.activePlan].html = document.getElementById('activity-list').innerHTML;
+            }
+            
             await fetch(URL, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': API_KEY
-                },
-                body: JSON.stringify({ html: listHtml })
+                headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                body: JSON.stringify(allData)
             });
+        }
+
+        function renderTabs() {
+            const nav = document.getElementById('plan-tabs');
+            nav.innerHTML = "";
+            Object.keys(allData.plans).forEach(name => {
+                const isLocked = (allData.plans[name].password && allData.plans[name].password !== "") ? "🔒" : "";
+                const btn = document.createElement('button');
+                btn.className = `tab ${name === allData.activePlan ? 'active' : ''}`;
+                btn.innerHTML = `<span>${name}</span> <span class="tab-lock">${isLocked}</span>`;
+                btn.onclick = () => switchPlan(name);
+                nav.appendChild(btn);
+            });
+        }
+
+        // Used for the initial page load so it doesn't prompt you instantly
+        function silentLoad(name) {
+            if (!allData.plans[name]) return;
+            allData.activePlan = name;
+            document.getElementById('active-plan-title').innerText = name;
+            document.getElementById('activity-list').innerHTML = allData.plans[name].html || "";
+            renderTabs();
+        }
+
+        async function switchPlan(name) {
+            if (name === allData.activePlan) return; // Already here
+
+            // Password Protection check
+            const targetPlan = allData.plans[name];
+            if (targetPlan.password && targetPlan.password !== "") {
+                const attempt = prompt(`Enter password for "${name}":`);
+                if (attempt !== targetPlan.password) {
+                    alert("Access Denied: Incorrect Password");
+                    return;
+                }
+            }
+
+            // Save old plan data first
+            allData.plans[allData.activePlan].html = document.getElementById('activity-list').innerHTML;
+            
+            // Switch
+            allData.activePlan = name;
+            document.getElementById('active-plan-title').innerText = name;
+            document.getElementById('activity-list').innerHTML = allData.plans[name].html || "";
+            renderTabs();
+            await saveToCloud(); // Save the fact that we switched active tabs
+        }
+
+        function setPassword() {
+            const currentPass = allData.plans[allData.activePlan].password || "";
+            const newPass = prompt("Set a password for this plan (leave blank to remove):", currentPass);
+            
+            if (newPass === null) return; // User hit cancel
+            
+            allData.plans[allData.activePlan].password = newPass;
+            renderTabs();
+            saveToCloud();
+            alert(newPass === "" ? "Password removed!" : "Password successfully set!");
+        }
+
+        function deleteCurrentPlan() {
+            const name = allData.activePlan;
+            if (name === "General") return alert("The General plan cannot be deleted.");
+            
+            if (confirm(`Delete the entire "${name}" category and all its items?`)) {
+                delete allData.plans[name];
+                allData.activePlan = "General";
+                silentLoad("General");
+                saveToCloud();
+            }
+        }
+
+        function addNewPlan() {
+            const name = prompt("Name your new plan category:");
+            if (name && !allData.plans[name]) {
+                allData.plans[name] = { html: "", password: "" };
+                switchPlan(name);
+                saveToCloud();
+            } else if (allData.plans[name]) {
+                alert("This category name already exists.");
+            }
         }
 
         function toggleModal() {
@@ -104,13 +236,11 @@
             const day = document.getElementById('in-day').value;
             const pri = document.getElementById('in-price').value;
             const dsc = document.getElementById('in-desc').value;
-            if(!act) return alert("Enter an activity!");
+            if(!act) return alert("Please enter an activity name!");
 
-            const list = document.getElementById('activity-list');
             const row = document.createElement('div');
             row.className = 'activity-item';
             row.setAttribute('onclick', 'toggleRow(this)');
-            
             row.innerHTML = `
                 <div class="item-main">
                     <div class="col-activity"><strong>${act}</strong></div>
@@ -121,32 +251,29 @@
                         <button class="delete-btn" onclick="deleteItem(event, this)">X</button>
                     </div>
                 </div>
-                <div class="description">${dsc}</div>
-            `;
-            list.appendChild(row);
+                <div class="description">${dsc}</div>`;
+            document.getElementById('activity-list').appendChild(row);
             
             await saveToCloud();
             toggleModal();
             document.querySelectorAll('input, textarea').forEach(i => i.value = '');
         }
 
-        function toggleRow(row) {
-            const d = row.querySelector('.description');
-            d.style.display = (d.style.display === 'block') ? 'none' : 'block';
+        function toggleRow(row) { 
+            const d = row.querySelector('.description'); 
+            d.style.display = (d.style.display === 'block') ? 'none' : 'block'; 
         }
-
-        async function toggleFav(e, btn) {
-            e.stopPropagation();
-            btn.closest('.activity-item').classList.toggle('is-favorite');
-            await saveToCloud();
+        async function toggleFav(e, btn) { 
+            e.stopPropagation(); 
+            btn.closest('.activity-item').classList.toggle('is-favorite'); 
+            await saveToCloud(); 
         }
-
-        async function deleteItem(e, btn) {
-            e.stopPropagation();
-            if(confirm("Delete this activity?")) {
-                btn.closest('.activity-item').remove();
-                await saveToCloud();
-            }
+        async function deleteItem(e, btn) { 
+            e.stopPropagation(); 
+            if(confirm("Delete this activity?")) { 
+                btn.closest('.activity-item').remove(); 
+                await saveToCloud(); 
+            } 
         }
     </script>
 </body>
